@@ -26,16 +26,16 @@ namespace ft
 		private:
 			T *arr;
 			size_type n;
-			size_type capacity;
+			size_type _capacity;
 			allocator_type _alloc;
 
 		public:
-			explicit vector (const allocator_type& alloc = allocator_type()): _alloc(alloc), n(0), arr(nullptr), capacity(0)
+			explicit vector (const allocator_type& alloc = allocator_type()): _alloc(alloc), n(0), arr(nullptr), _capacity(0)
 			{
 			};
 
-			explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): n(n), _alloc(alloc), capacity(n)  {
-				arr = _alloc.allocate(capacity);
+			explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): n(n), _alloc(alloc), _capacity(n)  {
+				arr = _alloc.allocate(_capacity);
 				for (size_t i = 0; i < n; i++)
 					arr[i] = val;
 			};
@@ -52,12 +52,12 @@ namespace ft
 				}
 			}; */
 			vector (const vector& x) {
-				capacity = x.capacity;
+				_capacity = x._capacity;
 				n = x.n;
 				_alloc = x._alloc;
 				for (size_type i = 0; i < n; i++)
 					_alloc.destroy(arr + i);
-				arr = _alloc.allocate(x.capacity);
+				arr = _alloc.allocate(x._capacity);
 				for (size_type i = 0; i < x.n; i++)
 					arr[i] = x.arr[i];
 				
@@ -94,6 +94,69 @@ namespace ft
 			const_reverse_iterator rend() const {
 				return (const_reverse_iterator(begin()));
 			};
+
+			size_type size() const {
+				return (n);
+			};
+
+			size_type max_size() const {
+				return (_alloc.max_size());
+			};
+
+			void resize (size_type n, value_type val = value_type()) {
+				value_type *tmp;
+
+				if (n < this->n)
+				{
+					for (size_type i = 0; i < this->n; i++)
+						if (i >= n)
+							_alloc.destroy(&arr[i]);
+					n = this->n;
+				}
+				else if (n > this->n) {
+					if (n < this->_capacity)
+					{
+						for (size_type i = 0; i < n; i++)
+							if (i >= this->n)
+								_alloc.construct(&arr[i], val);
+						n = this->n;
+					}
+					else if (n > this->_capacity)
+					{
+						n = n > 2 * this->_capacity ? n : this->_capacity * 2;
+						tmp = _alloc.allocate(n);
+						for (size_type i = 0; i < this->n; i++)
+							_alloc.construct(&tmp[i], arr[i]);
+						for (size_type i = 0; i < this->n; i++)
+							_alloc.destroy(&arr[i]);
+						_alloc.deallocate(arr, _capacity);
+						_capacity = n;
+					}
+				}
+			};
+
+			size_type capacity() const {
+				return (this->_capacity);
+			};
+			bool empty() const {
+				return (this->n == 0);
+			};
+
+			void reserve (size_type n) {
+				value_type *tmp;
+
+				if (n > this->_capacity)
+				{
+					n = n > 2 * this->_capacity ? n : this->_capacity * 2;
+					tmp = _alloc.allocate(n);
+					for (size_type i = 0; i < this->n; i++)
+						_alloc.construct(&tmp[i], arr[i]);
+					for (size_type i = 0; i < this->n; i++)
+						_alloc.destroy(&arr[i]);
+					_alloc.deallocate(arr, _capacity);
+					_capacity = n;
+				}
+			}
 
 	};
 }
