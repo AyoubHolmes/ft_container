@@ -2,8 +2,10 @@
 # define VECTOR_HPP
 // #include <vector>
 #include <iostream>
+#include <stdexcept>  
 #include "iterator.hpp"
 #include "reverse_iterator.hpp"
+
 namespace ft
 {
 	template < class T, class Alloc = std::allocator<T> > 
@@ -63,7 +65,6 @@ namespace ft
 				
 			};
 			iterator begin() {
-				// std::cout << "Rak hna" << std::endl;
 				return (iterator(arr));
 			};
 
@@ -79,7 +80,6 @@ namespace ft
 				return (iterator(arr + n));
 			};
 			reverse_iterator rbegin() {
-				// std::cout << "Rak hna" << std::endl;
 				return (reverse_iterator(end()));
 			};
 
@@ -87,7 +87,6 @@ namespace ft
 				return (const_reverse_iterator(end()));
 			};
 			reverse_iterator rend() {
-				// std::cout << "Rak hna" << std::endl;
 				return (reverse_iterator(begin()));
 			};
 
@@ -158,7 +157,39 @@ namespace ft
 				}
 			}
 
+			reference operator[] (size_type n) {
+				return (arr[n]);
+			};
+
+			const_reference operator[] (size_type n) const {
+				return (arr[n]);
+			};
+
+			reference at (size_type n) {
+				if (n >= this->size)
+					throw std::out_of_range("Vector");
+				return (arr[n]);
+			};
+
+			const_reference at (size_type n) const {
+				if (n >= this->size)
+					throw std::out_of_range("Vector");
+				return (arr[n]);
+			};
+			reference front() {
+				return (arr[0]);
+			};
+			const_reference front() const {
+				return (arr[0]);
+			};
+			reference back() {
+				return (arr[n - 1]);
+			};
+			const_reference back() const {
+				return (arr[n - 1]);
+			};
 	};
+	
 }
 
 #endif // !VECTOR_HPP
