@@ -26,7 +26,7 @@ namespace ft
             Myiterator(iterator_type t): ptr(t) {};
             template <class Iter>
             Myiterator(Myiterator<Iter>& i): ptr(i.base()) {};
-            iterator_type base() {
+            iterator_type base() const{
                 return (ptr);
             };
             Myiterator operator+ (difference_type n) const {
@@ -96,14 +96,14 @@ namespace ft
                    const Myiterator<Iterator>& rhs);
             
             template <class Iterator>
-            friend Myiterator<Iterator> operator+ (
-                    typename Myiterator<Iterator>::difference_type n,
-             const Myiterator<Iterator>& rev_it);
+            friend typename Myiterator<Iterator>::difference_type operator- (
+              const Myiterator<Iterator>& lhs,
+              const Myiterator<Iterator>& rhs);
             
             template <class Iterator>
-            friend Myiterator<Iterator> operator- (
-                    typename Myiterator<Iterator>::difference_type n,
-             const Myiterator<Iterator>& rev_it);
+            friend typename Myiterator<Iterator>::difference_type operator+ (
+              const Myiterator<Iterator>& lhs,
+              const Myiterator<Iterator>& rhs);
     };
        template <class Iterator>
        bool operator== (const Myiterator<Iterator>& lhs, const Myiterator<Iterator>& rhs) {
@@ -136,17 +136,17 @@ namespace ft
        };
             
        template <class Iterator>
-       Myiterator<Iterator> operator+ (typename Myiterator<Iterator>::difference_type n, const Myiterator<Iterator>& rev_it) {
-              Myiterator<Iterator> tmp(rev_it.ptr);
-              tmp += n;
-              return (tmp);
+       typename Myiterator<Iterator>::difference_type operator- (
+              const Myiterator<Iterator>& lhs,
+              const Myiterator<Iterator>& rhs) {
+              return (lhs.base() - rhs.base());
        };
             
        template <class Iterator>
-       Myiterator<Iterator> operator- (typename Myiterator<Iterator>::difference_type n, const Myiterator<Iterator>& rev_it) {
-              Myiterator<Iterator> tmp(rev_it.ptr);
-              tmp -= n;
-              return (tmp);
+       typename Myiterator<Iterator>::difference_type operator+ (
+              const Myiterator<Iterator>& lhs,
+              const Myiterator<Iterator>& rhs) {
+              return (lhs.base() + rhs.base());
        };
 }
 

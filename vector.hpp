@@ -5,7 +5,7 @@
 #include <stdexcept>  
 #include "iterator.hpp"
 #include "reverse_iterator.hpp"
-
+#include <iterator>
 namespace ft
 {
 	template < class T, class Alloc = std::allocator<T> > 
@@ -143,17 +143,17 @@ namespace ft
 
 			void reserve (size_type n) {
 				value_type *tmp;
-
-				if (n > this->_capacity)
+				if (n >= this->_capacity)
 				{
 					n = n > 2 * this->_capacity ? n : this->_capacity * 2;
 					tmp = _alloc.allocate(n);
-					for (size_type i = 0; i < this->n; i++)
+					for (size_type i = 0; i < size(); i++)
 						_alloc.construct(&tmp[i], arr[i]);
-					for (size_type i = 0; i < this->n; i++)
+					for (size_type i = 0; i < size(); i++)
 						_alloc.destroy(&arr[i]);
 					_alloc.deallocate(arr, _capacity);
 					_capacity = n;
+					arr = tmp;
 				}
 			}
 
@@ -187,6 +187,42 @@ namespace ft
 			};
 			const_reference back() const {
 				return (arr[n - 1]);
+			};
+			void assign (iterator first, iterator last) {
+				size_t len = last - first;
+				size_t i = 0;
+
+				if (len > _capacity)
+					reserve(len);
+				for (; first != last ; first++)
+				{
+					_alloc.destroy(arr + i);
+					_alloc.construct(&arr[i], *first);
+					i++;
+				}
+				if (len > n)
+					n = len;
+			};
+
+			void assign (size_type n, const value_type& val) {
+				size_t i = 0;
+
+				if (n > _capacity)
+					reserve(n);
+				for (size_type i = 0; i < n; i++)
+				{
+					_alloc.destroy(&arr[i]);
+					_alloc.construct(&arr[i], val);
+				}
+				if (n > this->n)
+					this->n = n;
+			};
+
+			void push_back (const value_type& val) {
+				if (size()+1 > _capacity){
+					reserve(_capacity * 2);}
+				n++;
+				_alloc.construct(&arr[n -1], val);
 			};
 	};
 	
