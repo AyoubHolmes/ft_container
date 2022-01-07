@@ -219,10 +219,30 @@ namespace ft
 			};
 
 			void push_back (const value_type& val) {
-				if (size()+1 > _capacity){
-					reserve(_capacity * 2);}
+				if (size()+1 > _capacity)
+					reserve(_capacity * 2);
 				n++;
 				_alloc.construct(&arr[n -1], val);
+			};
+			
+			void pop_back() {
+				_alloc.destroy(&arr[n - 1]);
+				n--;
+			};
+			iterator insert (iterator position, const value_type& val) {
+				if (size() + 1 > _capacity)
+					reserve(_capacity * 2);
+			};
+
+			void insert (iterator position, size_type n, const value_type& val) {
+				if (size() + 1 > _capacity)
+					reserve(_capacity * 2);
+			};
+
+			template <class InputIterator>
+			void insert (iterator position, InputIterator first, InputIterator last) {
+				if (size() + 1 > _capacity)
+					reserve(_capacity * 2);
 			};
 	};
 	

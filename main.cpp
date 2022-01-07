@@ -30,8 +30,8 @@ class Test {
 int main()
 {
     // Declaring a vector
-    ft::vector<int> v;
-    ft::vector<int> v2;
+    vector<int> v;
+    vector<int> v2;
 
 
     
@@ -48,15 +48,27 @@ int main()
     /* ft::vector<int>::iterator it1 = v.begin();
     ft::vector<int>::iterator it2 = v.end(); */
 
-    ft::vector<int>::iterator itv1 = v2.begin();
-    ft::vector<int>::iterator itv2 = v2.end();
-    ft::vector<int>::iterator it1 = v.begin();
-    ft::vector<int>::iterator it2 = v.end();
+    vector<int>::iterator itv1 = v2.begin();
+    vector<int>::iterator itv2 = v2.end();
+    vector<int>::iterator it1 = v.begin();
+    vector<int>::iterator it2 = v.end();
     
+
+    vector<int>::iterator test = v.insert(itv1 + 1, 5);
+    std::cout << *test << std::endl;
     for (; itv1 != itv2 ; itv1++)
     {
         std::cout << *itv1 << std::endl;
     }
+    // for (; it1 != it2 ; it1++)
+    // {
+    //     std::cout << *it1 << std::endl;
+    // }
+
+    /* v.pop_back();
+    v.pop_back();
+    it2 = v.end();
+    std::cout << std::endl; */
 
     /* v2.assign(5, 10);
 
