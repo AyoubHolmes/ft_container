@@ -30,8 +30,9 @@ namespace ft
                 return (ptr);
             };
             Myiterator operator+ (difference_type n) const {
-              ptr = ptr + n;
-              return (*this);
+              Myiterator tmp = *this;
+              tmp.ptr = tmp.ptr + n;
+              return (tmp);
             };
             Myiterator& operator++() {
               ptr++;
@@ -48,8 +49,9 @@ namespace ft
                    return (*this);
             };
             Myiterator operator- (difference_type n) const {
-              ptr = ptr - n;
-              return (*this);
+              Myiterator tmp = *this;
+              tmp.ptr = tmp.ptr - n;
+              return (tmp);
             };
             Myiterator& operator--() {
               ptr--;

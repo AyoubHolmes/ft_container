@@ -230,19 +230,55 @@ namespace ft
 				n--;
 			};
 			iterator insert (iterator position, const value_type& val) {
+				int index;
+				int s;
+			
+				index = position - begin();
+				s = this->n;
 				if (size() + 1 > _capacity)
-					reserve(_capacity * 2);
+					reserve(_capacity * 2);	
+				iterator iend = end();
+				for (; index < s; s--)
+				{
+					arr[s] = arr[s - 1];
+				}
+				this->n++;
+				arr[index] = val;
+				return (begin() + index);
 			};
 
 			void insert (iterator position, size_type n, const value_type& val) {
-				if (size() + 1 > _capacity)
-					reserve(_capacity * 2);
+				int index;
+
+				index = position - begin();
+				for (size_t i = 0; i < n; i++)
+					insert(begin() + index, val);
+				
 			};
 
-			template <class InputIterator>
-			void insert (iterator position, InputIterator first, InputIterator last) {
-				if (size() + 1 > _capacity)
-					reserve(_capacity * 2);
+			// template <class InputIterator>
+			// void insert (iterator position, InputIterator first, InputIterator last) {
+			// 	if (size() + 1 > _capacity)
+			// 		reserve(_capacity * 2);
+			// };
+
+			iterator erase (iterator position){
+				iterator iend = position;
+				for (;iend != end(); iend++)
+					*iend = *(iend + 1);
+				pop_back();
+				return (position++);
+			};
+
+			iterator erase (iterator first, iterator last) {
+				iterator iend;
+				for (; first != last; first++)
+					iend = erase(first);
+				return (iend);
+			};
+
+			void swap (vector& x) {
+				
 			};
 	};
 	

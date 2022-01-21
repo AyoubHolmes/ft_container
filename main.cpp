@@ -1,106 +1,70 @@
+#include <iostream>
 #include <vector>
 #include "vector.hpp"
-#include <iostream>
 
-using namespace std;
-
-class Test {
-    public:
-        Test() {
-            std::cout << "Hello Test" << std::endl;
-        };
-};
-
-/* int main() {
-    std::allocator<int> test;
-    int *arr = test.allocate(3);
-    test.construct(arr, 100);
-    std::cout << arr[0] << std::endl;
-    std::cout << arr[1] << std::endl;
-    std::cout << arr[2] << std::endl;
-    test.deallocate(arr, 3);
-    std::cout << "*************** Simple Test ***************" << std::endl;
-    std::allocator<Test> tst2;
-    Test *t = tst2.allocate(1);
-    Test *t2 = new Test();
-    delete t2;
-    tst2.deallocate(t, 1);
-}
- */
-int main()
+int main ()
 {
-    // Declaring a vector
-    vector<int> v;
-    vector<int> v2;
+  	// {
+		// std::cout<< "test myvector" << std::endl;
+		// ft::vector<int> myvector;
+		// myvector.push_back(1);
+		// myvector.push_back(2);
+		// myvector.push_back(3);
+		// ft::vector<int>::iterator it;
+		// std::cout << "myvector before contains:";
+		// for (it=myvector.begin(); it<myvector.end(); it++)
+		// 	std::cout << ' ' << *it;
+		// std::cout << '\n';
+		// it = myvector.begin()+1;
+		// ft::vector<int>::iterator newIt = myvector.insert(it,300);
+		// myvector.insert (myvector.begin() + 2, 3, 400);
+		// std::cout << "myvector after contains:";
+		// myvector.erase(myvector.begin());
+		// myvector.erase(myvector.begin(), myvector.begin() + 2);
+		// for (it=myvector.begin(); it<myvector.end(); it++)
+		// 	std::cout << ' ' << *it;
+	// 	// std::cout << '\n';
+	// 	std::vector<int> myvector;
 
+	// 	for (int i=1; i<=10; i++) myvector.push_back(i);
 
-    
-    v.push_back(1);
-    v.push_back(2);
-    v.push_back(3);
-    v.push_back(4);
+	// 	// erase the 6th element
+	// 	// myvector.erase (myvector.begin()+5);
 
-    v2.push_back(1 * 2);
-    v2.push_back(2 * 2);
-    v2.push_back(3 * 2);
-    v2.push_back(4 * 2);
+	// 	// erase the first 3 elements:
+	// 	// myvector.erase (myvector.begin(),myvector.begin()+3);
 
-    /* ft::vector<int>::iterator it1 = v.begin();
-    ft::vector<int>::iterator it2 = v.end(); */
+	// 	std::cout << "stdvector contains:";
+	// 	for (unsigned i=0; i<myvector.size(); ++i)
+	// 		std::cout << ' ' << myvector[i];
+	// 	std::cout << '\n';
+	// }
+   {
+		ft::vector<int> myvector;
 
-    vector<int>::iterator itv1 = v2.begin();
-    vector<int>::iterator itv2 = v2.end();
-    vector<int>::iterator it1 = v.begin();
-    vector<int>::iterator it2 = v.end();
-    
+		for (int i=1; i<=10; i++)
+		{
+			myvector.push_back(i);
+			// std::cout<< myvector[i-1]<<std::endl;
+		}
 
-    vector<int>::iterator test = v.insert(itv1 + 1, 5);
-    std::cout << *test << std::endl;
-    for (; itv1 != itv2 ; itv1++)
-    {
-        std::cout << *itv1 << std::endl;
-    }
-    // for (; it1 != it2 ; it1++)
-    // {
-    //     std::cout << *it1 << std::endl;
-    // }
+		ft::vector<int>::iterator it = myvector.begin();
+		while(it !=myvector.end())
+		{
+			std::cout<< *it << std::endl;
+			it++;
+		}
 
-    /* v.pop_back();
-    v.pop_back();
-    it2 = v.end();
-    std::cout << std::endl; */
+		// erase the 6th element
+		// myvector.erase (myvector.begin()+5);
 
-    /* v2.assign(5, 10);
+		// erase the first 3 elements:
+		// myvector.erase (myvector.begin(),myvector.begin()+3);
 
-    itv1 = v2.begin();
-    itv2 = v2.end();
-
-    for (; itv1 != itv2 ; itv1++)
-    {
-        std::cout << *itv1 << std::endl;
-    } */
-    /* for (; itv1 != itv2 ; itv1++)
-    {
-        std::cout << *itv1 << std::endl;
-    }
-    std::cout << std::endl;
-    v2.assign(it1, it2);
-    itv1 = v2.begin();
-    for (; itv1 != itv2 ; itv1++)
-    {
-        std::cout << *itv1 << std::endl;
-    } */
-
-    // Declaring an iterator
-
-    /* ft::vector<int> firstVector(3, 1336);
-    ft::vector<int> secondVector(firstVector);
-    ft::vector<int>::reverse_iterator it( firstVector.rbegin());
-    int i = 0;
-    for (; it != firstVector.rend(); it++)
-    {
-        std::cout << *it << std::endl;
-    } */
-
-    return 0;
+		// std::cout << "my_vector contains:";
+		// for (size_t i=0; i<myvector.size(); i++)
+		// 	std::cout << ' ' << myvector[i];
+		// std::cout << '\n';
+	}
+  return 0;
 }
