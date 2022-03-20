@@ -67,5 +67,6 @@
         "map": "cpp",
         "set": "cpp",
         "stack": "cpp"
-    }
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
 }
