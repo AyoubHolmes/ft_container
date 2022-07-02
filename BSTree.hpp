@@ -1,7 +1,7 @@
-#ifndef AVLtree_H_PP
-#define AVLtree_H_PP
+#ifndef BSTree_H_PP
+#define BSTree_H_PP
 
-#include "iostream"
+#include <iostream>
 
 typedef struct              s_node {
     int                     content;
@@ -9,13 +9,13 @@ typedef struct              s_node {
     struct s_node           *left_node;
 }                           t_node;
 
-class AVLtree {
+class BSTree {
     public:
-        AVLtree() {
+        BSTree() {
             root = NULL;
         };
 
-        AVLtree(int val) {
+        BSTree(int val) {
             root = new t_node;
             root->content = val;
             root->right_node = NULL;
@@ -39,9 +39,9 @@ class AVLtree {
             t_node *tmp = node;
             if (node == NULL)
                 return ;
-            std::cout <<str + " " << tmp->content << std::endl;
-            tree_printer(tmp->left_node,"left_node ");
-            tree_printer(tmp->right_node, "right_node ");
+            std::cout << str + " " << tmp->content << std::endl;
+            tree_printer(tmp->left_node,"left_node");
+            tree_printer(tmp->right_node, "right_node");
         };
 
         void tree_printer_in_order_traversal(t_node *node) {
@@ -73,7 +73,7 @@ class AVLtree {
             root = insert_a_nod(value, root);
         }
 
-        ~AVLtree() {
+        ~BSTree() {
 
         };
     
