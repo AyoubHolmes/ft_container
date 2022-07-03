@@ -73,9 +73,65 @@ public:
         root = insert_a_nod(value, root);
     }
 
-    /*
-    void delete_node(int val) {}
-    */
+    t_node *minOfRightnode(t_node *root)
+    {
+        if (root->right_node == NULL)
+            return (root);
+        return (minOfRightnode(root->right_node));
+    }
+
+    t_node *delete_node_by_given_node(int val, t_node *root)
+    {
+        // t_node *tmp = NULL;
+
+        if (root == NULL)
+            return NULL;
+        std::cout << "HEEEEEEEERE " << root->content << " " << val << std::endl;
+        if (root->content > val)
+            root->left_node = delete_node_by_given_node(val, root->left_node);
+        else if (root->content < val)
+            root->right_node = delete_node_by_given_node(val, root->right_node);
+        else
+        {
+
+            if (root->right_node == NULL && root->left_node == NULL)
+                return NULL;
+            if (root->right_node == NULL)
+            {
+                t_node *tmp = root->left_node;
+                free(root);
+                return tmp;
+            }
+            if (root->left_node == NULL)
+            {
+                t_node *tmp = root->right_node;
+                free(root);
+                return tmp;
+            }
+            else
+            {
+                t_node *tmp = minOfRightnode(root);
+                std::cout << tmp->content << std::endl;
+                root->content = tmp->content;
+                return delete_node_by_given_node(tmp->content, root->right_node);
+            }
+        }
+        return root;
+    }
+
+    void delete_node(int val)
+    {
+        root = delete_node_by_given_node(val, root);
+    }
+
+    t_node *search(int val, t_node *rnode)
+    {
+        if (rnode->content > val)
+            return search(val, rnode->left_node);
+        if (rnode->content < val)
+            return search(val, rnode->right_node);
+        return rnode;
+    }
 
     ~BSTree(){
 
