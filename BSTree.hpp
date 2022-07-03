@@ -73,50 +73,50 @@ public:
         root = insert_a_nod(value, root);
     }
 
-    t_node *minOfRightnode(t_node *root)
+    t_node *minOfnode(t_node *root)
     {
-        if (root->right_node == NULL)
-            return (root);
-        return (minOfRightnode(root->right_node));
-    }
-
-    t_node *delete_node_by_given_node(int val, t_node *root)
-    {
-        // t_node *tmp = NULL;
-
         if (root == NULL)
             return NULL;
-        std::cout << "HEEEEEEEERE " << root->content << " " << val << std::endl;
-        if (root->content > val)
-            root->left_node = delete_node_by_given_node(val, root->left_node);
-        else if (root->content < val)
-            root->right_node = delete_node_by_given_node(val, root->right_node);
+        if (root && root->left_node == NULL)
+            return (root);
+        return (minOfnode(root->left_node));
+    }
+
+    t_node *delete_node_by_given_node(int val, t_node *rnode)
+    {
+        if (rnode == NULL)
+            return NULL;
+        if (rnode->content > val)
+            rnode->left_node = delete_node_by_given_node(val, rnode->left_node);
+        else if (rnode->content < val)
+            rnode->right_node = delete_node_by_given_node(val, rnode->right_node);
         else
         {
-
-            if (root->right_node == NULL && root->left_node == NULL)
-                return NULL;
-            if (root->right_node == NULL)
+            if (rnode->right_node == NULL && rnode->left_node == NULL)
             {
-                t_node *tmp = root->left_node;
-                free(root);
+                free(rnode);
+                return NULL;
+            }
+            if (rnode->right_node == NULL)
+            {
+                t_node *tmp = rnode->left_node;
+                free(rnode);
                 return tmp;
             }
-            if (root->left_node == NULL)
+            if (rnode->left_node == NULL)
             {
-                t_node *tmp = root->right_node;
-                free(root);
+                t_node *tmp = rnode->right_node;
+                free(rnode);
                 return tmp;
             }
             else
             {
-                t_node *tmp = minOfRightnode(root);
-                std::cout << tmp->content << std::endl;
-                root->content = tmp->content;
-                return delete_node_by_given_node(tmp->content, root->right_node);
+                t_node *tmp = minOfnode(rnode->right_node);
+                rnode->content = tmp->content;
+                rnode->right_node = delete_node_by_given_node(tmp->content, rnode->right_node);
             }
         }
-        return root;
+        return rnode;
     }
 
     void delete_node(int val)

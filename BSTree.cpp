@@ -12,11 +12,11 @@ int main(int argc, char const *argv[])
     tree->insert_new_nod(5);
 
     tree->tree_printer(tree->get_root(), "root");
-    std::cout << "DELETE A NODE \n";
-    std::cout << "DELETE A NODE \n";
-    tree->delete_node(6);
+    std::cout << " ***************** " << std::endl;
+    tree->delete_node(3);
+    std::cout << " ***************** " << std::endl;
     tree->tree_printer(tree->get_root(), "root");
-    // tree->tree_printer(tree->get_root(), "Hola");
+    std::cout << " ***************** " << std::endl;
     t_node *searchedOne = tree->search(4, tree->get_root());
     std::cout << searchedOne->content << std::endl;
 
