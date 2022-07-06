@@ -1,0 +1,104 @@
+*************************************************************************
+				Map
+*************************************************************************
+------------- Pair Constructor -------------
+The price of lightbulbs is $0.99
+The price of shoes is $39.9
+The price of tomatoes is $2.3
+------------- Pair Assignment operator = -------------
+Home planet: Earth
+Planet size: 6371
+------------- make pair -------------
+foo: 10, 20
+bar: 10, 65
+------------- Pair relational operators -------------
+foo and bar are not equal
+foo is less than bar
+foo is less than or equal to bar
+------------- Map Constructors -------------
+a	10
+b	30
+c	50
+d	70
+------------- operator [] -------------
+mymap['a'] is an element
+mymap['b'] is another element
+mymap['c'] is another element
+mymap['d'] is 
+mymap now contains 4 elements.
+------------- empty -------------
+a => 10
+b => 20
+c => 30
+------------- max size -------------
+The map contains 1000 elements.
+461168601842738790
+------------- insert -------------
+element 'z' already existed with a value of 200
+2
+mymap contains:
+a => 100
+b => 300
+c => 400
+z => 200
+a	100
+b	300
+c	400
+z	200
+------------- clear -------------
+mymap contains:
+x => 100
+y => 200
+z => 300
+mymap contains:
+a => 1101
+b => 2202
+------------- Assignment operator = -------------
+Size of first: 0
+Size of second: 3
+------------- erase -------------
+a => 10
+d => 40
+------------- swap -------------
+foo contains:
+a => 11
+b => 22
+c => 33
+bar contains:
+x => 100
+y => 200
+------------- key comp object -------------
+mymap contains:
+a => 100
+b => 200
+c => 300
+
+------------- value comp object -------------
+mymap contains:
+z => 3003
+y => 2002
+x => 1001
+------------- find -------------
+elements in mymap:
+a => 50
+c => 150
+d => 200
+------------- count -------------
+a is an element of mymap.
+b is not an element of mymap.
+c is an element of mymap.
+d is not an element of mymap.
+e is not an element of mymap.
+f is an element of mymap.
+g is not an element of mymap.
+------------- lower and upper bound -------------
+a => 20
+e => 100
+------------- equal range -------------
+lower bound points to: b => 20
+upper bound points to: c => 30
+------------- get allocator -------------
+The allocated array has a size of 40 bytes.
+1	younes
+2	choaib
+3	hatim

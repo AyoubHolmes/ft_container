@@ -1,180 +1,323 @@
-#ifndef AVLTree_H_PP
-#define AVLTree_H_PP
+#ifndef AVLTREE_HPP
+#define AVLTREE_HPP
 
-#include <iostream>
-
-typedef struct s_node
+namespace ft
 {
-    int content;
-    struct s_node *right_node;
-    struct s_node *left_node;
-    int balance_factor;
-    struct s_node *parent;
-} t_node;
-
-class AVLTree
-{
-public:
-    AVLTree()
+    // SECTION - BST DATA STRUCTURE
+    template <class T>
+    struct Node
     {
-        root = NULL;
+        T data;
+        Node *parent;
+        Node *left;
+        Node *right;
+        int balanceFactor;
+        int height;
+
+        Node() : parent(nullptr), left(nullptr), right(nullptr) {}
+        Node(const T &data) : data(data) {}
+        Node(const T &data, const int height) : data(data), parent(nullptr), left(nullptr), right(nullptr), balanceFactor(0), height(height) {}
     };
 
-    AVLTree(int val)
+    // SECTION - BALANCED BINARY SEARCH TREE
+    template <class T, class Compare, class Alloc>
+    class AVLTree
     {
-        root = new t_node;
-        root->content = val;
-        root->right_node = NULL;
-        root->left_node = NULL;
-    };
+    public:
+        typedef T value_type;
+        typedef Compare key_compare;
+        typedef Node<T> *nodePtr;
+        typedef typename Alloc::template rebind<Node<T> >::other allocator_type;
+        typedef typename allocator_type::size_type size_type;
 
-    t_node *get_root()
-    {
-        return root;
-    }
+    private:
+        nodePtr _root;
+        nodePtr _end;
+        allocator_type _alloc;
+        key_compare _cmp;
+        size_type _size;
 
-    void tree_printer(t_node *node, std::string str)
-    {
-        t_node *tmp = node;
-        if (node == NULL)
-            return;
-        std::cout << str + " " << tmp->content << std::endl;
-        tree_printer(tmp->left_node, "left_node");
-        tree_printer(tmp->right_node, "right_node");
-    };
-
-    void tree_printer_in_order_traversal(t_node *node)
-    {
-        t_node *tmp = node;
-        if (node == NULL)
-            return;
-        tree_printer_in_order_traversal(tmp->left_node);
-        std::cout << tmp->content << std::endl;
-        tree_printer_in_order_traversal(tmp->right_node);
-    }
-
-    /* RIGHT ROTATION FUNCTION */
-
-    t_node *right_rotation(t_node *y)
-    {
-        t_node *parent = y->parent;
-        if (y->parent != NULL)
-            parent = y->parent;
-        t_node *x = y->left_node;
-        t_node *T = x->right_node;
-        if (x->right_node != NULL)
-            T = x->right_node;
-        x->right_node = y;
-        y->parent = x;
-        y->left_node = T;
-        if (T != NULL)
-            T->parent = y;
-        x->parent = parent;
-    }
-
-    /* LEFT ROTATION FUNCTION */
-
-    void left_rotation(t_node *newNode)
-    {
-    }
-
-    /* GET THE CASE FIRST */
-
-    t_node *insert_a_nod(int value, t_node *root)
-    {
-        t_node *tmp = root;
-        if (root == NULL)
+    public:
+        AVLTree(const allocator_type &alloc = allocator_type(), const key_compare &cmp = key_compare()) : _root(nullptr), _end(nullptr), _alloc(alloc), _cmp(cmp), _size(0)
         {
-            root = new t_node;
-            root->content = value;
-            root->right_node = NULL;
-            root->left_node = NULL;
-            root->parent = NULL;
+            _end = _alloc.allocate(1);
+            _alloc.construct(_end);
         }
-        else if (root->content < value)
+        ~AVLTree()
         {
-            root->right_node = insert_a_nod(value, root->right_node);
-            root->right_node->parent = root;
+            clear();
+            _alloc.deallocate(_end, 1);
+            _end = nullptr;
         }
-        else
+        size_type size() const { return _size; }
+        size_type max_size() const { return _alloc.max_size(); }
+        allocator_type get_allocator() const { return (this->_alloc); }
+        nodePtr getEnd() const { return (this->_end); }
+        nodePtr getMin(nodePtr node = nullptr) const
         {
-            root->left_node = insert_a_nod(value, root->left_node);
-            root->left_node->parent = root;
+            if (!node)
+                node = _root;
+            while (node && node->left)
+                node = node->left;
+            return node;
         }
-        return (root);
-    }
-
-    void insert_new_nod(int value)
-    {
-        root = insert_a_nod(value, root);
-    }
-
-    t_node *minOfnode(t_node *root)
-    {
-        if (root == NULL)
-            return NULL;
-        if (root && root->left_node == NULL)
-            return (root);
-        return (minOfnode(root->left_node));
-    }
-
-    t_node *delete_node_by_given_node(int val, t_node *rnode)
-    {
-        if (rnode == NULL)
-            return NULL;
-        if (rnode->content > val)
-            rnode->left_node = delete_node_by_given_node(val, rnode->left_node);
-        else if (rnode->content < val)
-            rnode->right_node = delete_node_by_given_node(val, rnode->right_node);
-        else
+        nodePtr getMax(nodePtr node = nullptr)
         {
-            if (rnode->right_node == NULL && rnode->left_node == NULL)
+            if (!node)
+                node = _root;
+            while (node && node->right)
+                node = node->right;
+            return node;
+        }
+        nodePtr lowerBound(const value_type &data)
+        {
+            nodePtr node = getMin();
+            while (node != _end)
             {
-                free(rnode);
-                return NULL;
+                if (!_cmp(node->data.first, data.first))
+                    return (node);
+                node = successor(node);
             }
-            if (rnode->right_node == NULL)
+            return (_end);
+        }
+        nodePtr upperBound(const value_type &data)
+        {
+            nodePtr node = getMin();
+            while (node != _end)
             {
-                t_node *tmp = rnode->left_node;
-                free(rnode);
-                return tmp;
+                if (_cmp(data.first, node->data.first))
+                    return (node);
+                node = successor(node);
             }
-            if (rnode->left_node == NULL)
+            return (_end);
+        }
+        void swap(AVLTree &tree)
+        {
+            nodePtr root = _root;
+            nodePtr end = _end;
+            allocator_type alloc = _alloc;
+            key_compare cmp = _cmp;
+            size_type size = _size;
+
+            _root = tree._root;
+            _end = tree._end;
+            _alloc = tree._alloc;
+            _cmp = tree._cmp;
+            _size = tree._size;
+
+            tree._root = root;
+            tree._end = end;
+            tree._alloc = alloc;
+            tree._cmp = cmp;
+            tree._size = size;
+        }
+        void clear()
+        {
+            clear(_root);
+            _size = 0;
+        }
+        nodePtr find(const value_type &data)
+        {
+            return find(data, _root);
+        }
+        void insert(const value_type data)
+        {
+            insert(data, _root, _end);
+            _end->left = _root;
+            _root->parent = _end;
+        }
+        void erase(const value_type &data)
+        {
+            erase(_root, data);
+            _end->left = _root;
+            if (_root)
+                _root->parent = _end;
+        }
+
+    private:
+        void eraseHelper(nodePtr &node, nodePtr &parent)
+        {
+            nodePtr tmp;
+            if (node->right)
+                tmp = node->right;
+            else
+                tmp = node->left;
+            if (tmp)
+                tmp->parent = parent;
+            _alloc.deallocate(node, 1);
+            node = tmp;
+            _size--;
+        }
+        void erase(nodePtr &node, const value_type &data)
+        {
+            if (!node)
+                return;
+            if (node->data.first == data.first)
             {
-                t_node *tmp = rnode->right_node;
-                free(rnode);
+                if (!node->left || !node->right)
+                {
+                    eraseHelper(node, node->parent);
+                    return;
+                }
+                else
+                {
+                    if (node->left->height > node->right->height)
+                    {
+                        value_type value(getMax(node->left)->data);
+                        _alloc.construct(node, value);
+                        erase(node->left, value);
+                    }
+                    else
+                    {
+                        value_type value(getMin(node->right)->data);
+                        _alloc.construct(node, value);
+                        erase(node->right, value);
+                    }
+                }
+            }
+            else if (_cmp(data.first, node->data.first))
+                erase(node->left, data);
+            else
+                erase(node->right, data);
+            update(node);
+            balance(node);
+        }
+        void insert(const value_type &data, nodePtr &node, nodePtr &parent)
+        {
+            if (!node)
+            {
+                node = _alloc.allocate(1);
+                _alloc.construct(node, data, 0);
+                node->parent = parent;
+                _size++;
+                return;
+            }
+            if (_cmp(data.first, node->data.first))
+                insert(data, node->left, node);
+            else
+                insert(data, node->right, node);
+            update(node);
+            balance(node);
+        }
+        nodePtr find(const value_type &data, nodePtr &node)
+        {
+            if (!node || node == _end)
+                return (_end);
+            if (data.first == node->data.first)
+                return (node);
+            if (_cmp(data.first, node->data.first))
+                return (find(data, node->left));
+            return (find(data, node->right));
+        }
+        nodePtr successor(nodePtr node)
+        {
+            nodePtr parent = node->parent;
+            nodePtr tmp = node;
+            if (tmp->right)
+            {
+                tmp = tmp->right;
+                while (tmp->left)
+                    tmp = tmp->left;
                 return tmp;
             }
             else
             {
-                t_node *tmp = minOfnode(rnode->right_node);
-                rnode->content = tmp->content;
-                rnode->right_node = delete_node_by_given_node(tmp->content, rnode->right_node);
+                while (parent && tmp == parent->right)
+                {
+                    tmp = parent;
+                    parent = tmp->parent;
+                }
+                return (parent);
             }
         }
-        return rnode;
-    }
+        void clear(nodePtr &node)
+        {
+            if (node)
+            {
+                clear(node->left);
+                clear(node->right);
+                _alloc.deallocate(node, 1);
+                node = nullptr;
+            }
+        }
+        void update(nodePtr node)
+        {
+            int leftNodeHeight = -1;
+            int rightNodeHeight = -1;
 
-    void delete_node(int val)
-    {
-        root = delete_node_by_given_node(val, root);
-    }
+            if (node->left)
+                leftNodeHeight = node->left->height;
+            if (node->right)
+                rightNodeHeight = node->right->height;
 
-    t_node *search(int val, t_node *rnode)
-    {
-        if (rnode->content > val)
-            return search(val, rnode->left_node);
-        if (rnode->content < val)
-            return search(val, rnode->right_node);
-        return rnode;
-    }
-
-    ~AVLTree(){
-
+            int diff = ((leftNodeHeight > rightNodeHeight) ? leftNodeHeight : rightNodeHeight);
+            node->height = 1 + diff;
+            node->balanceFactor = rightNodeHeight - leftNodeHeight;
+        }
+        void balance(nodePtr &node)
+        {
+            if (node->balanceFactor < -1)
+            {
+                if (node->left->balanceFactor <= 0)
+                    leftLeftCase(node);
+                else
+                    leftRightCase(node);
+            }
+            else if (node->balanceFactor > 1)
+            {
+                if (node->right->balanceFactor >= 0)
+                    rightRightCase(node);
+                else
+                    rightLeftCase(node);
+            }
+        }
+        void leftRotation(nodePtr &node)
+        {
+            nodePtr parent = node->parent;
+            nodePtr root = node->right;
+            node->right = root->left;
+            if (node->right)
+                node->right->parent = node;
+            node->parent = root;
+            root->left = node;
+            root->parent = parent;
+            node = root;
+            update(node->left);
+            update(node);
+        }
+        void rightRotation(nodePtr &node)
+        {
+            nodePtr parent = node->parent;
+            nodePtr root = node->left;
+            node->left = root->right;
+            if (node->left)
+                node->left->parent = node;
+            node->parent = root;
+            root->right = node;
+            root->parent = parent;
+            node = root;
+            update(node->right);
+            update(node);
+        }
+        void leftLeftCase(nodePtr &node)
+        {
+            rightRotation(node);
+        }
+        void leftRightCase(nodePtr &node)
+        {
+            leftRotation(node->left);
+            rightRotation(node);
+        }
+        void rightRightCase(nodePtr &node)
+        {
+            leftRotation(node);
+        }
+        void rightLeftCase(nodePtr &node)
+        {
+            rightRotation(node->right);
+            leftRotation(node);
+        }
     };
-
-private:
-    t_node *root;
-};
+}
 
 #endif

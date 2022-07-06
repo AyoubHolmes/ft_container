@@ -4,7 +4,7 @@
 #include <iostream>
 #include <stdexcept>  
 #include "iterator.hpp"
-#include "reverse_iterator.hpp"
+#include "reverseIterator.hpp"
 #include <iterator>
 namespace ft
 {
@@ -22,8 +22,8 @@ namespace ft
 			typedef typename allocator_type::difference_type			difference_type;
 			typedef typename ft::Myiterator<pointer>					iterator; // int *
 			typedef typename ft::Myiterator<const_pointer>				const_iterator;
-			typedef typename ft::MyReverseiterator<iterator>          	reverse_iterator;
-			typedef typename ft::MyReverseiterator<const_iterator>    	const_reverse_iterator;
+			typedef typename ft::reverseiterator<iterator>          	reverse_iterator;
+			typedef typename ft::reverseiterator<const_iterator>    	const_reverse_iterator;
 
 		private:
 			T *arr;
@@ -166,7 +166,7 @@ namespace ft
 			};
 
 			reference at (size_type n) {
-				if (n >= this->size)
+				if (n >= this->size())
 					throw std::out_of_range("Vector");
 				return (arr[n]);
 			};
